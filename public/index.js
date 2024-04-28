@@ -48,7 +48,7 @@ save === null || save === void 0 ? void 0 : save.addEventListener("click", () =>
     render();
     clearInputValues();
 });
-// reset 
+// reset
 function clearInputValues() {
     if (marrid)
         marrid.checked = false;
@@ -67,7 +67,7 @@ function clearInputValues() {
     if (date)
         date.value = "";
 }
-//  Student data add localStorage 
+//  Student data add localStorage
 function saveToLocalStorage(student) {
     let persons = JSON.parse(localStorage.getItem("persons") || "[]");
     persons.push(student);
@@ -77,8 +77,9 @@ function saveToLocalStorage(student) {
 function fetchDataFromLocalStorage() {
     return JSON.parse(localStorage.getItem("persons") || "[]");
 }
-// Student ui 
+// Student ui
 function fetchData(data) {
+    console.log(data);
     let ui = "";
     data.map((el, i) => (ui += `
       <tr>
@@ -134,7 +135,7 @@ function edit(id) {
                 salary: salary1.value,
                 positions: positions1.value,
             };
-            let updatedPersons = persons.map((el) => (el.id === personEdit.id ? updateobj : el));
+            let updatedPersons = persons.map((el) => el.id === personEdit.id ? updateobj : el);
             localStorage.setItem("persons", JSON.stringify(updatedPersons));
             fetchData(updatedPersons);
         });
@@ -169,14 +170,18 @@ let salaryFilter = document.getElementById("salaryFilter");
 salaryFilter === null || salaryFilter === void 0 ? void 0 : salaryFilter.addEventListener("change", () => {
     let value = salaryFilter.value;
     let persons = JSON.parse(localStorage.getItem("persons") || "[]");
-    if (value === "high") {
-        // let a =   persons.sort((a, b) => b?.salary - a?.salary);
-        // console.log(a); 
+    if (value === "all") {
+        persons;
+    }
+    else if (value === "hig") {
+        persons.sort((a, b) => +b.salary - +a.salary);
+    }
+    else if (value === "low") {
+        persons.sort((a, b) => +a.salary - +b.salary);
     }
     fetchData(persons);
-    console.log(persons);
 });
-// Search 
+// Search
 let search = document.getElementById("search");
 search === null || search === void 0 ? void 0 : search.addEventListener("input", () => {
     let value = search.value.toLowerCase();
@@ -191,3 +196,5 @@ function render() {
     fetchData(persons);
 }
 render();
+let persons = JSON.parse(localStorage.getItem("persons") || "[]");
+console.log(persons);

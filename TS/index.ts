@@ -18,9 +18,6 @@ let date1 = document.getElementById("date1") as HTMLInputElement;
 let editbtn = document.getElementById("edit");
 let personID: number | null = null;
 
-
-
-
 // Student types
 type Student = {
   id: number;
@@ -42,7 +39,9 @@ let save: HTMLElement | null = document.getElementById("save");
 
 save?.addEventListener("click", () => {
   console.log(salary?.value);
-  let studentID: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
+  let studentID: Student[] = JSON.parse(
+    localStorage.getItem("persons") || "[]"
+  );
   let student: Student = {
     id: studentID.length + 1,
     marrid: marrid?.checked ?? false,
@@ -55,19 +54,18 @@ save?.addEventListener("click", () => {
     date: date?.value ?? "",
   };
   if (personID === null) {
-    students.push(student);    
+    students.push(student);
   } else {
     students[personID] = student;
     personID = null;
   }
   saveToLocalStorage(student);
   render();
-  clearInputValues()
-
+  clearInputValues();
 });
 
-// reset 
-function clearInputValues () {
+// reset
+function clearInputValues() {
   if (marrid) marrid.checked = false;
   if (salary) salary.value = "";
   if (adresSlect) adresSlect.value = "all";
@@ -78,9 +76,7 @@ function clearInputValues () {
   if (date) date.value = "";
 }
 
-
-
-//  Student data add localStorage 
+//  Student data add localStorage
 function saveToLocalStorage(student: Student) {
   let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
   persons.push(student);
@@ -92,13 +88,16 @@ function fetchDataFromLocalStorage(): Student[] {
   return JSON.parse(localStorage.getItem("persons") || "[]");
 }
 
-// Student ui 
+// Student ui
 function fetchData(data: Student[]) {
+  console.log(data);
+
   let ui = "";
-  data.map((el , i) => (
-    ui += `
+  data.map(
+    (el, i) =>
+      (ui += `
       <tr>
-        <th scope="row">${i+1}</th>
+        <th scope="row">${i + 1}</th>
         <td>${el.first}</td>
         <td>${el.last}</td>
         <td>${el.adresSlect}</td>
@@ -110,17 +109,21 @@ function fetchData(data: Student[]) {
         <td>
           <button type="button" class="btn btn-primary" data-bs-toggle="modal"
           data-bs-target="#exampleModal1" onclick="edit(${el.id})">Edit</button>
-          <button type="button" class="btn btn-danger" onclick="delet(${el.id})">Delete</button>
+          <button type="button" class="btn btn-danger" onclick="delet(${
+            el.id
+          })">Delete</button>
         </td>
-      </tr>`
-  ));
+      </tr>`)
+  );
   result?.innerHTML = ui;
 }
 
 // Delete Student
 function delet(id: number) {
   if (confirm("Delete employee")) {
-    let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
+    let persons: Student[] = JSON.parse(
+      localStorage.getItem("persons") || "[]"
+    );
     let updatedPersons = persons.filter((el) => el.id !== id);
     localStorage.setItem("persons", JSON.stringify(updatedPersons));
     fetchData(updatedPersons);
@@ -153,7 +156,9 @@ function edit(id: number) {
         salary: salary1!.value,
         positions: positions1!.value,
       };
-      let updatedPersons = persons.map((el) => (el.id === personEdit!.id ? updateobj : el));
+      let updatedPersons = persons.map((el) =>
+        el.id === personEdit!.id ? updateobj : el
+      );
       localStorage.setItem("persons", JSON.stringify(updatedPersons));
       fetchData(updatedPersons);
     });
@@ -166,30 +171,36 @@ let jobFilter = document.getElementById("jobFilter") as HTMLSelectElement;
 jobFilter?.addEventListener("change", () => {
   let value = jobFilter.value;
   let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
-  let filteredPersons = value === "all" ? persons : persons.filter((el) => el.job === value);
+  let filteredPersons =
+    value === "all" ? persons : persons.filter((el) => el.job === value);
   fetchData(filteredPersons);
 });
 
-
 // Positions Filter
-let positionsFilter = document.getElementById("positionsfilter") as HTMLSelectElement;
+let positionsFilter = document.getElementById(
+  "positionsfilter"
+) as HTMLSelectElement;
 
 positionsFilter?.addEventListener("change", () => {
   let value = positionsFilter.value;
 
   let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
-  let filteredPersons = value === "all" ? persons : persons.filter((el) => el.positions === value);
+  let filteredPersons =
+    value === "all" ? persons : persons.filter((el) => el.positions === value);
   fetchData(filteredPersons);
 });
 
 // Address Filter
-let addressFilter = document.getElementById("addressFilter") as HTMLSelectElement;
+let addressFilter = document.getElementById(
+  "addressFilter"
+) as HTMLSelectElement;
 
 addressFilter?.addEventListener("change", () => {
   let value = addressFilter.value;
-  
+
   let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
-  let filteredPersons = value === "all" ? persons : persons.filter((el) => el.adresSlect === value);
+  let filteredPersons =
+    value === "all" ? persons : persons.filter((el) => el.adresSlect === value);
   fetchData(filteredPersons);
 });
 
@@ -199,16 +210,17 @@ let salaryFilter = document.getElementById("salaryFilter") as HTMLSelectElement;
 salaryFilter?.addEventListener("change", () => {
   let value = salaryFilter.value;
   let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
-  if (value === "high") {
-    // let a =   persons.sort((a, b) => b?.salary - a?.salary);
-    // console.log(a); 
- } 
-  fetchData(persons); 
-  console.log(persons);
-  
+  if (value === "all") {
+    persons;
+  } else if (value === "hig") {
+    persons.sort((a, b) => +b.salary - +a.salary);
+  } else if (value === "low") {
+    persons.sort((a, b) => +a.salary - +b.salary);
+  }
+  fetchData(persons);
 });
 
-// Search 
+// Search
 let search = document.getElementById("search") as HTMLInputElement;
 
 search?.addEventListener("input", () => {
@@ -229,3 +241,6 @@ function render() {
 }
 
 render();
+
+let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
+console.log(persons);
