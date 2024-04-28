@@ -25,7 +25,7 @@ let personID: number | null = null;
 type Student = {
   id: number;
   marrid: boolean;
-  salary: number;
+  salary: string;
   adresSlect: string;
   positions: string;
   job: string;
@@ -46,7 +46,7 @@ save?.addEventListener("click", () => {
   let student: Student = {
     id: studentID.length + 1,
     marrid: marrid?.checked ?? false,
-    salary: +salary?.value ?? 0,
+    salary: salary?.value ?? "",
     adresSlect: adresSlect?.value ?? "",
     positions: positions?.value ?? "",
     job: job?.value ?? "",
@@ -150,7 +150,7 @@ function edit(id: number) {
         marrid: marrid1!.checked,
         job: job1!.value,
         adresSlect: adresSlect1!.value,
-        salary: +salary1!.value,
+        salary: salary1!.value,
         positions: positions1!.value,
       };
       let updatedPersons = persons.map((el) => (el.id === personEdit!.id ? updateobj : el));
@@ -200,8 +200,8 @@ salaryFilter?.addEventListener("change", () => {
   let value = salaryFilter.value;
   let persons: Student[] = JSON.parse(localStorage.getItem("persons") || "[]");
   if (value === "high") {
-  persons.sort((a, b) => b?.salary - a?.salary);
-   
+    // let a =   persons.sort((a, b) => b?.salary - a?.salary);
+    // console.log(a); 
  } 
   fetchData(persons); 
   console.log(persons);

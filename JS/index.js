@@ -29,7 +29,7 @@ save === null || save === void 0 ? void 0 : save.addEventListener("click", () =>
     let student = {
         id: studentID.length + 1,
         marrid: (_a = marrid === null || marrid === void 0 ? void 0 : marrid.checked) !== null && _a !== void 0 ? _a : false,
-        salary: (_b = +(salary === null || salary === void 0 ? void 0 : salary.value)) !== null && _b !== void 0 ? _b : 0,
+        salary: (_b = salary === null || salary === void 0 ? void 0 : salary.value) !== null && _b !== void 0 ? _b : "",
         adresSlect: (_c = adresSlect === null || adresSlect === void 0 ? void 0 : adresSlect.value) !== null && _c !== void 0 ? _c : "",
         positions: (_d = positions === null || positions === void 0 ? void 0 : positions.value) !== null && _d !== void 0 ? _d : "",
         job: (_e = job === null || job === void 0 ? void 0 : job.value) !== null && _e !== void 0 ? _e : "",
@@ -131,7 +131,7 @@ function edit(id) {
                 marrid: marrid1.checked,
                 job: job1.value,
                 adresSlect: adresSlect1.value,
-                salary: +salary1.value,
+                salary: salary1.value,
                 positions: positions1.value,
             };
             let updatedPersons = persons.map((el) => (el.id === personEdit.id ? updateobj : el));
@@ -170,7 +170,8 @@ salaryFilter === null || salaryFilter === void 0 ? void 0 : salaryFilter.addEven
     let value = salaryFilter.value;
     let persons = JSON.parse(localStorage.getItem("persons") || "[]");
     if (value === "high") {
-        persons.sort((a, b) => (b === null || b === void 0 ? void 0 : b.salary) - (a === null || a === void 0 ? void 0 : a.salary));
+        // let a =   persons.sort((a, b) => b?.salary - a?.salary);
+        // console.log(a); 
     }
     fetchData(persons);
     console.log(persons);
